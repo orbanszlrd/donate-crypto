@@ -1,4 +1,6 @@
-import { ethers, run, network } from 'hardhat';
+import { ethers, network } from 'hardhat';
+
+import { verify } from '../utils/verify';
 
 async function main() {
     const DonateCryptoFactory = await ethers.getContractFactory('DonateCrypto');
@@ -19,19 +21,6 @@ async function main() {
             await donateCrypto.deployTransaction.wait(6);
             await verify(donateCrypto.address, []);
         }
-    }
-}
-
-async function verify(contractAddress: string, args: any[]) {
-    console.log('Verifying contract..');
-
-    try {
-        await run('verify:verify', {
-            address: contractAddress,
-            constructorArguments: args,
-        });
-    } catch (error) {
-        console.log(error);
     }
 }
 

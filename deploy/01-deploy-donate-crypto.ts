@@ -1,4 +1,6 @@
-import { ethers, run, network } from 'hardhat';
+import { ethers, network } from 'hardhat';
+
+import { verify } from '../utils/verify';
 
 export default async () => {
     const DonateCryptoFactory = await ethers.getContractFactory('DonateCrypto');
@@ -19,18 +21,5 @@ export default async () => {
             await donateCrypto.deployTransaction.wait(6);
             await verify(donateCrypto.address, []);
         }
-    }
-};
-
-const verify = async (contractAddress: string, args: any[]) => {
-    console.log('Verifying contract..');
-
-    try {
-        await run('verify:verify', {
-            address: contractAddress,
-            constructorArguments: args,
-        });
-    } catch (error) {
-        console.log(error);
     }
 };
