@@ -7,9 +7,11 @@ import 'hardhat-deploy';
 import 'solidity-coverage';
 
 const GANACHE_RPC_URL = process.env.GANACHE_RPC_URL || '';
+const GANACHE_ADDRESS = process.env.GANACHE_ADDRESS || '';
 const GANACHE_PRIVATE_KEY = process.env.GANACHE_PRIVATE_KEY || '';
 
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL || '';
+const ACCOUNT_ADDRESS = process.env.ACCOUNT_ADDRESS || '';
 const ACCOUNT_PRIVATE_KEY = process.env.ACCOUNT_PRIVATE_KEY || '';
 
 const config: HardhatUserConfig = {
@@ -19,6 +21,17 @@ const config: HardhatUserConfig = {
     },
     gasReporter: {
         enabled: true,
+    },
+    mocha: {
+        timeout: 40000,
+    },
+    namedAccounts: {
+        deployer: {
+            default: 0,
+            1: 0,
+            goerli: ACCOUNT_ADDRESS,
+            ganache: GANACHE_ADDRESS,
+        },
     },
     networks: {
         localhost: {
