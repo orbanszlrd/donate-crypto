@@ -19,6 +19,14 @@ contract DonateCrypto {
         _;
     }
 
+    function count() public view returns (uint256) {
+        return donors.length;
+    }
+
+    function getAllDonors() public view returns (address[] memory) {
+        return donors;
+    }
+
     function donate() public payable {
         addressToAmount[msg.sender] += msg.value;
         donors.push(msg.sender);
@@ -26,8 +34,8 @@ contract DonateCrypto {
 
     function withdraw() public onlyOwner {
         for (uint256 i = 0; i < donors.length; i++) {
-            address funder = donors[i];
-            addressToAmount[funder] = 0;
+            address donor = donors[i];
+            addressToAmount[donor] = 0;
         }
         donors = new address[](0);
         (bool callSuccess, ) = payable(msg.sender).call{
