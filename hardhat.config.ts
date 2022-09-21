@@ -3,6 +3,7 @@ import '@nomicfoundation/hardhat-toolbox';
 import '@nomiclabs/hardhat-etherscan';
 import 'dotenv/config';
 import 'hardhat-gas-reporter';
+import 'hardhat-deploy';
 import 'solidity-coverage';
 
 const GANACHE_RPC_URL = process.env.GANACHE_RPC_URL || '';
