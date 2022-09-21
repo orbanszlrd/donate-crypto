@@ -64,6 +64,12 @@ npm run deploy:ganache
 npm run deploy:goerli
 ```
 
+## Linting
+
+```shell
+npm run lint
+```
+
 ## Testing Smart Contracts
 
 Writing automated tests when building smart contracts is of crucial importance.

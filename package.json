@@ -10,6 +10,7 @@
         "deploy:localhost": "yarn hardhat run scripts/deploy.ts --network localhost",
         "deploy:ganache": "yarn hardhat run scripts/deploy.ts --network ganache",
         "deploy:goerli": "yarn hardhat run scripts/deploy.ts --network goerli",
+        "lint": "yarn solhint contracts/*",
         "test": "yarn hardhat test",
         "test:coverage": "yarn hardhat coverage"
     },
