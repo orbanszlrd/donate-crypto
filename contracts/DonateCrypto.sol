@@ -8,19 +8,19 @@ error DonateCrypto__NotOwner();
  * @author Szilard Orban
  */
 contract DonateCrypto {
-    address private immutable i_owner;
+    address private immutable owner;
 
-    address[] private s_donors;
+    address[] private donors;
 
-    mapping(address => uint256) private s_addressToAmount;
+    mapping(address => uint256) private addressToAmount;
 
     modifier onlyOwner() {
-        if (msg.sender != i_owner) revert DonateCrypto__NotOwner();
+        if (msg.sender != owner) revert DonateCrypto__NotOwner();
         _;
     }
 
     constructor() {
-        i_owner = msg.sender;
+        owner = msg.sender;
     }
 
     receive() external payable {
@@ -32,40 +32,38 @@ contract DonateCrypto {
     }
 
     function getContractOwner() public view returns (address) {
-        return i_owner;
+        return owner;
     }
 
     function getNumberOfDonors() public view returns (uint256) {
-        return s_donors.length;
+        return donors.length;
     }
 
     function getDonors() public view returns (address[] memory) {
-        return s_donors;
+        return donors;
     }
 
     function getDonatedAmount(address donor) public view returns (uint256) {
-        return s_addressToAmount[donor];
+        return addressToAmount[donor];
     }
 
     function donate() public payable {
-        require(msg.value > 0);
+        require(msg.value > 0, 'Invalid amount');
 
-        if (s_addressToAmount[msg.sender] == 0) {
-            s_donors.push(msg.sender);
+        if (addressToAmount[msg.sender] == 0) {
+            donors.push(msg.sender);
         }
 
-        s_addressToAmount[msg.sender] += msg.value;
+        addressToAmount[msg.sender] += msg.value;
     }
 
     function withdraw() public onlyOwner {
-        address[] memory donors = s_donors;
-
         for (uint256 i = 0; i < donors.length; i++) {
             address donor = donors[i];
-            s_addressToAmount[donor] = 0;
+            addressToAmount[donor] = 0;
         }
 
-        s_donors = new address[](0);
+        donors = new address[](0);
 
         (bool callSuccess, ) = payable(msg.sender).call{
             value: address(this).balance
