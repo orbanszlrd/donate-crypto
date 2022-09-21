@@ -1,0 +1,9 @@
+{
+  "name": "donate-crypto",
+  "version": "1.0.0",
+  "description": "Donate Crypto",
+  "main": "index.js",
+  "repository": "https://github.com/orbanszlrd/donate-crypto.git",
+  "author": "Szilard Orban",
+  "license": "MIT"
+}
