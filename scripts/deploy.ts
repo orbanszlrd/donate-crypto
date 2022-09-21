@@ -1,23 +1,41 @@
-import { ethers } from "hardhat";
+import { ethers, run, network } from 'hardhat';
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+    const DonateCryptoFactory = await ethers.getContractFactory('DonateCrypto');
 
-  const lockedAmount = ethers.utils.parseEther("1");
+    console.log('Deploying contract...');
 
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+    const donateCrypto = await DonateCryptoFactory.deploy();
+    await donateCrypto.deployed();
 
-  await lock.deployed();
+    console.log(`Deployed to ${donateCrypto.address}`);
 
-  console.log(`Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`);
+    if (network.config.chainId === 31337 || network.config.chainId === 1337) {
+        console.log('You are on a local network, verification is not needed!');
+    } else {
+        console.log('Verification needed!');
+
+        if (process.env.ETERSCAN_API_KEY) {
+            await donateCrypto.deployTransaction.wait(6);
+            await verify(donateCrypto.address, []);
+        }
+    }
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
+async function verify(contractAddress: string, args: any[]) {
+    console.log('Verifying contract..');
+
+    try {
+        await run('verify:verify', {
+            address: contractAddress,
+            constructorArguments: args,
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+    console.error(error);
+    process.exitCode = 1;
 });
