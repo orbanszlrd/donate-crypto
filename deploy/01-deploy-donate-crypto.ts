@@ -2,7 +2,7 @@ import { ethers, network } from 'hardhat';
 
 import { verify } from '../utils/verify';
 
-export default async () => {
+const deploy = async () => {
     const DonateCryptoFactory = await ethers.getContractFactory('DonateCrypto');
 
     console.log('Deploying contract...');
@@ -24,4 +24,6 @@ export default async () => {
     }
 };
 
-export const tags = ['all'];
+deploy.tags = ['all'];
+
+export default deploy;

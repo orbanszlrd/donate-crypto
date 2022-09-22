@@ -5,13 +5,27 @@ console.log(`Test started on network ${network.name}`);
 
 const testNetworks = ['goerli'];
 
+interface DonateCryptoInterface {
+    address: string;
+    provider: {
+        getBalance(address: string): number;
+    };
+    deployed(): void;
+    getContractOwner(): string;
+    getDonors(): string[];
+    getNumberOfDonors(): string[];
+    donate({ value }: { value: number }): void;
+    getDonatedAmount(address: string): number;
+    withdraw(): void;
+}
+
 testNetworks.includes(network.name)
     ? describe.skip
     : describe('DonateCrypto', function () {
           const sentAmount = ethers.utils.parseEther('1');
 
-          let deployer;
-          let donateCrypto;
+          let deployer: string;
+          let donateCrypto: DonateCryptoInterface;
 
           beforeEach(async () => {
               deployer = await ethers.provider.getSigner().getAddress();
@@ -53,7 +67,7 @@ testNetworks.includes(network.name)
           });
 
           it('Should return the donors', async () => {
-              let donors;
+              let donors: string[];
 
               donors = await donateCrypto.getDonors();
               assert.equal(donors.length, 0);
