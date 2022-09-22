@@ -11,6 +11,7 @@
         "deploy:ganache": "yarn hardhat run scripts/deploy.ts --network ganache",
         "deploy:goerli": "yarn hardhat run scripts/deploy.ts --network goerli",
         "lint": "yarn solhint contracts/*",
+        "format": "prettier --write .",
         "test": "yarn hardhat test",
         "test:coverage": "yarn hardhat coverage"
     },
